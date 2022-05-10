@@ -115,10 +115,6 @@ public class Sudoku {
         return allCellGroups;
     }
 
-    public Cell getCellAt(int row, int column) {
-        return cells[row][column];
-    }
-
     public boolean isFilled() {
         return getUnsolvedCells().isEmpty();
     }
