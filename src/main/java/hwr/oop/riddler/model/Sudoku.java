@@ -52,11 +52,7 @@ public class Sudoku {
     }
 
     public List<Cell> getCells() {
-        var collectedCells = new ArrayList<Cell>();
-        for (Cell[] rows : cells) {
-            Collections.addAll(collectedCells, rows);
-        }
-        return collectedCells;
+        return Arrays.stream(cells).flatMap(Arrays::stream).toList();
     }
 
     public List<Cell> getUnsolvedCells() {
