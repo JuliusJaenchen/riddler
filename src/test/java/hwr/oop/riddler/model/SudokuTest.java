@@ -118,4 +118,9 @@ class SudokuTest {
     void unsolved_canBeCopied() {
         assertTrue(Arrays.deepEquals(unsolved.getValues(), new Sudoku(unsolved).getValues()));
     }
+
+    @Test
+    void unsolved_getSize() {
+        assertEquals(4, unsolved.getSize());
+    }
 }
