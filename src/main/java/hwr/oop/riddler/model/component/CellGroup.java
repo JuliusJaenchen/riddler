@@ -2,6 +2,7 @@ package hwr.oop.riddler.model.component;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A CellGroup is either a Row, Column, or a Box. These are treated Identically. A polymorphic implementation would
@@ -19,21 +20,11 @@ public class CellGroup {
     }
 
     public Set<Cell> getUnsolvedCells() {
-        var unsolvedCells = new HashSet<Cell>();
-        for (Cell cell : cells) {
-            if (cell.isEmpty())
-                unsolvedCells.add(cell);
-        }
-        return unsolvedCells;
+        return cells.stream().filter(Cell::isEmpty).collect(Collectors.toSet());
     }
 
     public Set<Integer> getAllValues() {
-        var values = new HashSet<Integer>();
-        for (Cell cell : cells) {
-            if (cell.isFilled())
-                values.add(cell.getValue());
-        }
-        return values;
+        return cells.stream().filter(Cell::isFilled).map(Cell::getValue).collect(Collectors.toSet());
     }
 
     @Override
