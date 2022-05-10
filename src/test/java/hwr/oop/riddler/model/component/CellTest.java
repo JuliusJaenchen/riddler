@@ -2,7 +2,6 @@ package hwr.oop.riddler.model.component;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,24 +27,17 @@ class CellTest {
     }
 
     @Test
-    void emptyCell_setValueZeroThrowsException() {
-        try {
-            emptyCell.setValue(0);
-            fail();
-        } catch (IllegalArgumentException ignored) {
-        } catch (Exception ignored) {
-            fail();
-        }
+    void emptyCell_setValueZero_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> emptyCell.setValue(0));
     }
 
     @Test
     void emptyCell_getValueFails() {
-        try {
-            emptyCell.getValue();
-            fail(".getValue() on an empty Cell should thow an IllegalStateException");
-        } catch (IllegalStateException ignored) {
-        }
-
+        assertThrows(
+                IllegalStateException.class,
+                () -> emptyCell.getValue(),
+                ".getValue() on an empty Cell should thow an IllegalStateException"
+        );
     }
 
     @Test
@@ -91,11 +83,7 @@ class CellTest {
 
     @Test
     void filledCell_setValueFails() {
-        try {
-            filledCell.setValue(1);
-            fail();
-        } catch (IllegalStateException ignore) {
-        }
+        assertThrows(IllegalStateException.class, () -> filledCell.setValue(1));
     }
 
     @Test

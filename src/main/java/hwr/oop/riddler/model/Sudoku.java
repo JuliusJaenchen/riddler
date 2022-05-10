@@ -10,7 +10,6 @@ public class Sudoku {
     private final Cell[][] cells;
     @Getter
     private final int size;
-    @Getter
     private final int boxSize;
 
     public Sudoku(int[][] input) {
@@ -53,20 +52,11 @@ public class Sudoku {
     }
 
     public List<Cell> getCells() {
-        var collectedCells = new ArrayList<Cell>();
-        for (Cell[] rows : cells) {
-            Collections.addAll(collectedCells, rows);
-        }
-        return collectedCells;
+        return Arrays.stream(cells).flatMap(Arrays::stream).toList();
     }
 
     public List<Cell> getUnsolvedCells() {
-        var unsolvedCells = new ArrayList<Cell>();
-        for (Cell cell : getCells()) {
-            if (cell.isEmpty())
-                unsolvedCells.add(cell);
-        }
-        return unsolvedCells;
+        return getCells().stream().filter(Cell::isEmpty).toList();
     }
 
     public CellGroup getRow(int rowIndex) {
@@ -119,10 +109,6 @@ public class Sudoku {
         allCellGroups.addAll(getColumns());
         allCellGroups.addAll(getBoxes());
         return allCellGroups;
-    }
-
-    public Cell getCellAt(int row, int column) {
-        return cells[row][column];
     }
 
     public boolean isFilled() {
