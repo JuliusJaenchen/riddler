@@ -20,7 +20,7 @@ public class SudokuValidator {
     }
 
     public boolean isInvalid() {
-        return !isValid();
+        return !this.isValid();
     }
 
     private boolean unsolvedCellsHavePossibles() {
@@ -28,12 +28,11 @@ public class SudokuValidator {
                 .getUnsolvedCells()
                 .stream()
                 .allMatch(this::hasPossibles);
-
     }
 
     private boolean cellGroupsAreValid() {
         return sudoku
-                .getCellGroups()
+                .getAllCellGroups()
                 .stream()
                 .allMatch(Predicate.not(this::hasDuplicate));
     }

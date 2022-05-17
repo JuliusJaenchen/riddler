@@ -1,59 +1,56 @@
 package hwr.oop.riddler.io;
 
 import hwr.oop.riddler.model.Sudoku;
-import hwr.oop.riddler.model.component.Cell;
-import hwr.oop.riddler.model.component.CellPosition;
+import hwr.oop.riddler.model.SudokuBuilder;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
+
+import static java.util.function.Predicate.not;
 
 public class SudokuParser {
     public Sudoku parse(File inputFile) {
-        return new Sudoku(parseInputFile(inputFile));
+        var sudokuArray = fileToArray(inputFile);
+        return parseArray(sudokuArray);
     }
 
     public Sudoku parse(int[][] sudokuArray) {
         return new Sudoku(parseArray(sudokuArray));
     }
 
-    private Set<Cell> parseInputFile(File inputFile) {
-        Set<Cell> cells = new HashSet<>();
-        try (var bufferedReader = new BufferedReader(new FileReader(inputFile))) {
-            int rowIndex = 0;
-            for (String line; (line = bufferedReader.readLine()) != null; ) {
-                var sanitizedLine = line.trim()
-                        .replace(" ", "")
-                        .replace("_", "0");
-                if (line.trim().isEmpty())
-                    continue;
-                cells.addAll(parseLine(sanitizedLine, rowIndex));
-                rowIndex++;
+    private String sanitizeLine(String line) {
+        return line.trim()
+                .replace(" ", "")
+                .replace("_", "0");
+    }
+
+    private Sudoku parseArray(int[][] sudoku) {
+        SudokuBuilder builder = new SudokuBuilder(sudoku.length);
+        int sudokuSize = sudoku.length;
+        for (int row = 0; row < sudokuSize; row++) {
+            for (int column = 0; column < sudokuSize; column++) {
+                builder.set(sudoku[row][column], row, column);
             }
-            return cells;
+        }
+        return builder.toSudoku();
+    }
+
+    private int[][] fileToArray(File inputFile) {
+        try (var fileReader = new FileReader(inputFile);
+             var bufferedReader = new BufferedReader(fileReader)
+        ) {
+            return bufferedReader.lines()
+                    .map(this::sanitizeLine)
+                    .filter(not(String::isEmpty))
+                    .map(this::lineToIntArray)
+                    .toArray(int[][]::new);
         } catch (IOException e) {
             throw new UncheckedIOException("Could not parse input file " + inputFile.getName(), e);
         }
     }
 
-    private Set<Cell> parseLine(String sanitizedLine, int rowIndex) {
-        Set<Cell> cells = new HashSet<>();
-        for (int columnIndex = 0; columnIndex < 9; columnIndex++) {
-            char field = sanitizedLine.charAt(columnIndex);
-            CellPosition position = new CellPosition(rowIndex, columnIndex);
-            Cell cell = new Cell(Character.getNumericValue(field), position);
-            cells.add(cell);
-        }
-        return cells;
-    }
-
-    private Set<Cell> parseArray(int[][] sudoku) {
-        Set<Cell> cells = new HashSet<>();
-        for (int row = 0; row < sudoku.length; row++) {
-            for (int column = 0; column < sudoku[0].length; column++) {
-                cells.add(new Cell(sudoku[row][column], new CellPosition(row, column)));
-            }
-        }
-        return cells;
+    private int[] lineToIntArray(String line) {
+        return line.chars()
+                .map(Character::getNumericValue)
+                .toArray();
     }
 }

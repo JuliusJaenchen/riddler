@@ -5,8 +5,9 @@ import lombok.Getter;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+
+import static java.util.function.Predicate.*;
+import static java.util.stream.Collectors.*;
 
 /**
  * A CellGroup is either a Row, Column, or a Box. These are treated Identically. A polymorphic implementation would
@@ -24,18 +25,16 @@ public class CellGroup {
     }
 
     public Set<Cell> getUnsolvedCells() {
-        return cells
-                .stream()
-                .filter(Predicate.not(Cell::isFilled))
-                .collect(Collectors.toSet());
+        return cells.stream()
+                .filter(not(Cell::isFilled))
+                .collect(toSet());
     }
 
     public Set<Integer> getAllValues() {
-        return cells
-                .stream()
+        return cells.stream()
                 .filter(Cell::isFilled)
                 .map(Cell::getValue)
-                .collect(Collectors.toSet());
+                .collect(toSet());
     }
 
     @Override

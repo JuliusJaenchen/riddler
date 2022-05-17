@@ -5,24 +5,31 @@ import hwr.oop.riddler.model.component.Cell;
 
 public class SinglePossibleImplementor implements SolvingComponent {
     private Sudoku sudoku;
+    private boolean changesWereMade;
 
     @Override
-    public boolean execute(Sudoku sudoku) {
+    public void execute(Sudoku sudoku) {
         this.sudoku = sudoku;
-        boolean changesMade = false;
+        changesWereMade = false;
+
+        this.sudoku.getCells().forEach(this::fillCellWithOnlyPossibleValue);
 
         for (Cell cell : this.sudoku.getCells()) {
-            changesMade = fillCellWithOnlyPossibleValue(cell);
+            fillCellWithOnlyPossibleValue(cell);
         }
-        return changesMade;
     }
 
-    private boolean fillCellWithOnlyPossibleValue(Cell cell) {
+    @Override
+    public boolean changesWereMade() {
+        return changesWereMade;
+    }
+
+    private void fillCellWithOnlyPossibleValue(Cell cell) {
         if (cell.isFilled() || !cellHasOnePossibleValue(cell))
-            return false;
+            return;
 
         cell.setValue(onlyPossibleValue(cell));
-        return true;
+        changesWereMade = true;
     }
 
     private boolean cellHasOnePossibleValue(Cell cell) {

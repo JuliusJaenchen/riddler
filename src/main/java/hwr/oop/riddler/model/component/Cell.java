@@ -46,9 +46,8 @@ public class Cell {
     }
 
     public boolean addImpossible(int impossibleValue) {
-        if(impossibleValue < 1) {
+        if (impossibleValue < 1)
             throw new IllegalArgumentException("Possible must be greater than 0");
-        }
         return impossibles.add(impossibleValue);
     }
 
@@ -60,5 +59,13 @@ public class Cell {
         if (value == 0)
             throw new IllegalStateException("empty cell has no value");
         return value;
+    }
+
+    public void resetValue() {
+        value = 0;
+    }
+
+    public void setImpossibles(Set<Integer> impossibles) {
+        this.impossibles = impossibles;
     }
 }

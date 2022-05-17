@@ -1,5 +1,6 @@
 package hwr.oop.riddler.model.component;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public enum CellGroupType {
@@ -11,7 +12,11 @@ public enum CellGroupType {
         this.indexFunction = indexFunction;
     }
 
-    public Function<CellPosition, Integer> getIndexFunction() {
+    private Function<CellPosition, Integer> getIndexFunction() {
         return indexFunction;
+    }
+
+    public int typeIndexOfPosition(CellPosition position) {
+        return getIndexFunction().apply(position);
     }
 }

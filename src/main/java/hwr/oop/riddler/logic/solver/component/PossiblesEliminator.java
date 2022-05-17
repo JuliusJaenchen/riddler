@@ -8,14 +8,17 @@ public class PossiblesEliminator implements SolvingComponent {
     boolean changesWereMade;
 
     @Override
-    public boolean execute(Sudoku sudoku) {
+    public void execute(Sudoku sudoku) {
         this.changesWereMade = false;
 
-        for (CellGroup cellGroup : sudoku.getCellGroups()) {
+        for (CellGroup cellGroup : sudoku.getAllCellGroups()) {
             removePossibleCellValues(cellGroup);
         }
+    }
 
-        return this.changesWereMade;
+    @Override
+    public boolean changesWereMade() {
+        return changesWereMade;
     }
 
     private void removePossibleCellValues(CellGroup cellGroup) {
