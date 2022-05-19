@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 public class SudokuPrinter {
-    private Sudoku sudoku;
     private final OutputStream outputStream;
 
     public SudokuPrinter(OutputStream out) {
@@ -27,7 +26,6 @@ public class SudokuPrinter {
     }
 
     private String sudokuToString(Sudoku sudoku) {
-        this.sudoku = sudoku;
         var builder = new StringBuilder();
 
         builder.append("------ Solved Sudoku -------\n");
