@@ -41,9 +41,9 @@ public class SudokuValidator {
         return cell.getImpossibles().size() < sudoku.getSize();
     }
 
-    private boolean hasDuplicate(CellGroup testSubject) {
+    private boolean hasDuplicate(CellGroup cellGroup) {
         Set<Integer> encounteredValues = new HashSet<>();
-        for (Cell cell : testSubject.cells()) {
+        for (Cell cell : cellGroup.cells()) {
             if (cell.isFilled()) {
                 if (encounteredValues.contains(cell.getValue()))
                     return true;
