@@ -23,7 +23,7 @@ public class PossiblesEliminator implements SolvingComponent {
 
     private void removePossibleCellValues(CellGroup cellGroup) {
         for (Cell cell : cellGroup.getUnsolvedCells()) {
-            boolean addedImpossibles = cell.addImpossibles(cellGroup.getAllValues());
+            boolean addedImpossibles = cell.addImpossibles(cellGroup.getCellValues());
             if (addedImpossibles)
                 this.changesWereMade = true;
         }

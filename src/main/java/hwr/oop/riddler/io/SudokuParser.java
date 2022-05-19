@@ -31,7 +31,7 @@ public class SudokuParser {
                 builder.set(sudoku[row][column], row, column);
             }
         }
-        return builder.toSudoku();
+        return builder.getSudoku();
     }
 
     private int[][] fileToArray(File inputFile) {

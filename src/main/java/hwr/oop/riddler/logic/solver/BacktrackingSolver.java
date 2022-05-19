@@ -1,5 +1,6 @@
 package hwr.oop.riddler.logic.solver;
 
+import hwr.oop.riddler.io.SudokuPrinter;
 import hwr.oop.riddler.logic.SudokuValidator;
 import hwr.oop.riddler.logic.solver.component.*;
 import hwr.oop.riddler.model.Sudoku;
@@ -7,7 +8,7 @@ import hwr.oop.riddler.model.component.Cell;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.List;
+import java.util.Set;
 
 public class BacktrackingSolver {
     private final SolvingComponent[] solvingComponents = {
@@ -21,6 +22,7 @@ public class BacktrackingSolver {
 
     public Sudoku solve(Sudoku sudoku) {
         workingCopy = new Sudoku(sudoku);
+        new SudokuPrinter(System.out).print(workingCopy);
 
         while (true) {
             boolean changesWereMade = solveWithSteps();
@@ -55,18 +57,18 @@ public class BacktrackingSolver {
     }
 
     private void assumeValue() {
-        Cell targetCell = getNextUnsolvedCell();
-        int assumedValue = getAPossibleValue(targetCell);
+        Cell unsolvedCell = getNextUnsolvedCell();
+        int assumedValue = getAPossibleValue(unsolvedCell);
 
-        targetCell.addImpossible(assumedValue);
+        unsolvedCell.addImpossible(assumedValue);
         sudokuBackups.push(new Sudoku(workingCopy));
 
-        targetCell.setValue(assumedValue);
+        unsolvedCell.setValue(assumedValue);
     }
 
     private Cell getNextUnsolvedCell() {
-        List<Cell> unsolvedCells = workingCopy.getUnsolvedCells();
-        return unsolvedCells.get(0);
+        Set<Cell> unsolvedCells = workingCopy.getUnsolvedCells();
+        return unsolvedCells.iterator().next();
     }
 
     private int getAPossibleValue(Cell cell) {

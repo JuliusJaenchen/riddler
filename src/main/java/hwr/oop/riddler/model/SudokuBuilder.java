@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SudokuBuilder {
-    private Set<Cell> cells = new HashSet<>();
-    private int sudokuSize;
+    private final Set<Cell> cells = new HashSet<>();
+    private final int sudokuSize;
 
     public SudokuBuilder(int sudokuSize) {
         this.sudokuSize = sudokuSize;
@@ -19,15 +19,16 @@ public class SudokuBuilder {
         int boxIndex = calculateBoxIndex(row, column, sudokuSize);
         CellPosition position = new CellPosition(row, column, boxIndex);
         Cell cell = new Cell(value, position);
+
         cells.add(cell);
     }
 
-    public Sudoku toSudoku() {
-        fillUnfilledCells();
+    public Sudoku getSudoku() {
+        addEmptyCells();
         return new Sudoku(cells);
     }
 
-    private void fillUnfilledCells() {
+    private void addEmptyCells() {
         for (int row = 0; row < sudokuSize; row++) {
             for (int column = 0; column < sudokuSize; column++) {
                 if(!hasCellAt(row, column)) {
