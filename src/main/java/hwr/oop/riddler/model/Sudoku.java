@@ -56,7 +56,7 @@ public class Sudoku {
                 .filter(cell -> cell.getPosition().equals(position))
                 .findAny();
         if (optionalCell.isEmpty())
-            throw new IllegalStateException("no cell found at this position");
+            throw new IllegalStateException("no cell found at: row:"+ position.row() +" column:"+ position.column());
         return optionalCell.get();
     }
 
