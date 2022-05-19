@@ -33,7 +33,7 @@ public class SudokuPrinter {
         builder.append("------ Solved Sudoku -------\n");
         for (int row = 0; row < sudoku.getSize(); row++) {
             for (int column = 0; column < sudoku.getSize(); column++) {
-                var cell = sudoku.getCellAt(new CellPosition(row, column, calculateBoxIndex(row, column)));
+                var cell = sudoku.getCellAt(row, column);
                 builder.append(cell.isFilled() ? cell.getValue() : "_");
                 builder.append(" ");
             }
@@ -42,10 +42,5 @@ public class SudokuPrinter {
 
         builder.append("----------------------------\n");
         return builder.toString();
-    }
-
-    int calculateBoxIndex(int row, int column) {
-        int boxSize = (int)Math.sqrt(sudoku.getSize());
-        return (row/boxSize)*boxSize + column/boxSize;
     }
 }
