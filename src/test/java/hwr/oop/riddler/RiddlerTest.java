@@ -1,6 +1,5 @@
 package hwr.oop.riddler;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -8,14 +7,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 
 class RiddlerTest {
-    Riddler riddler = new Riddler();
-
-    @BeforeEach
-    void setup() {
-
-    }
-
-
     @Test
     void riddler_solvesTestSudokuFiles() {
         for (int i = 1; i <= 2; i++) {
@@ -26,14 +17,14 @@ class RiddlerTest {
 
     private void riddler_solvesSudokuFileCorrectly(String filePath) {
         String[] args = {filePath};
-        riddler.main(args);
+        Riddler.main(args);
     }
 
     @Test
     void riddler_isFastEnough() {
         long start = System.currentTimeMillis();
         for (int i = 1; i <= 20; i++) {
-            riddler.main(new String[]{String.format("src/test/resources/sudokus/sudoku.%d.txt", i)});
+            Riddler.main(new String[]{String.format("src/test/resources/sudokus/sudoku.%d.txt", i)});
         }
         long speed = System.currentTimeMillis() - start;
         assertThat(speed).isLessThan(20000);
@@ -44,7 +35,7 @@ class RiddlerTest {
         int benchmarkSampleSize = 20;
         long start = System.currentTimeMillis();
         for (int i = 1; i <= benchmarkSampleSize; i++) {
-            riddler.main(new String[]{String.format("src/test/resources/sudokus/sudoku.%d.txt", i)});
+            Riddler.main(new String[]{String.format("src/test/resources/sudokus/sudoku.%d.txt", i)});
         }
         System.out.printf("Riddler took %dms for %d Sudokus%n", System.currentTimeMillis() - start, benchmarkSampleSize);
     }
