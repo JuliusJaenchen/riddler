@@ -1,7 +1,6 @@
 package hwr.oop.riddler.io;
 
 import hwr.oop.riddler.model.Sudoku;
-import hwr.oop.riddler.model.component.CellPosition;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
