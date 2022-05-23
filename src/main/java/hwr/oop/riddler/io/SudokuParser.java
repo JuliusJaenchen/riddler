@@ -1,7 +1,7 @@
 package hwr.oop.riddler.io;
 
 import hwr.oop.riddler.model.Sudoku;
-import hwr.oop.riddler.model.SudokuBuilder;
+import hwr.oop.riddler.logic.SudokuBuilder;
 
 import java.io.*;
 

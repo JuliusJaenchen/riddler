@@ -1,5 +1,6 @@
-package hwr.oop.riddler.model;
+package hwr.oop.riddler.logic;
 
+import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.component.Cell;
 import hwr.oop.riddler.model.component.CellPosition;
 
