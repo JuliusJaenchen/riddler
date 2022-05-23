@@ -67,12 +67,17 @@ class UnsolvedSudokuTest {
                 Set.of(3,4),
                 Set.of(1,2)
         );
-        Set<Set<Integer>> allGroups = new HashSet<>();
-        allGroups.addAll(rows);
-        allGroups.addAll(columns);
-        allGroups.addAll(boxes);
+        Set<Set<Integer>> expectedGroups = new HashSet<>();
+        expectedGroups.addAll(rows);
+        expectedGroups.addAll(columns);
+        expectedGroups.addAll(boxes);
 
-        assertEquals(allGroups, unsolvedSudoku.getAllCellGroups().stream().map(CellGroup::getCellValues).collect(Collectors.toSet()));
+        Set<Set<Integer>> testableGroups = unsolvedSudoku.getAllCellGroups()
+                .stream()
+                .map(CellGroup::getCellValues)
+                .collect(Collectors.toSet());
+
+        assertEquals(expectedGroups, testableGroups);
     }
 
     @Test
