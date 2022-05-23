@@ -61,10 +61,16 @@ public class Sudoku {
     }
 
     public Cell getCellAt(int row, int column) {
+        if (!coordinatesAreValid(row, column))
+            throw new IllegalStateException("no cell found at: row:" + row + " column:" + column);
         return cells.stream()
                 .filter(cell -> (cell.getPosition().row() == row) && (cell.getPosition().column() == column))
                 .toList()
                 .get(0);
+    }
+
+    private boolean coordinatesAreValid(int row, int column) {
+        return ((0 <= row) && (row < size)) && ((0 <= column) && (column < size));
     }
 
     public boolean isFilled() {
