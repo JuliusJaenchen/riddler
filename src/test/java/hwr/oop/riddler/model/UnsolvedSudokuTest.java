@@ -87,6 +87,11 @@ class UnsolvedSudokuTest {
     }
 
     @Test
+    void getCellAt_invalidCoordinates_throwsException() {
+        assertThrows(IllegalStateException.class, () -> unsolvedSudoku.getCellAt(5,0));
+    }
+
+    @Test
     void getCells_getsAllCells() {
         assertEquals(16, unsolvedSudoku.getCells().size());
     }
