@@ -19,11 +19,10 @@ public class SudokuBuilder {
         int boxIndex = calculateBoxIndex(row, column, sudokuSize);
         CellPosition position = new CellPosition(row, column, boxIndex);
         Cell cell = new Cell(value, position);
-
         cells.add(cell);
     }
 
-    public Sudoku getSudoku() {
+    public Sudoku buildSudoku() {
         addEmptyCells();
         return new Sudoku(cells);
     }
