@@ -5,7 +5,8 @@ import lombok.Getter;
 
 import java.util.*;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toSet;
 
 public class Sudoku {
     private final Set<Cell> cells;
@@ -18,9 +19,27 @@ public class Sudoku {
     }
 
     public Sudoku(Sudoku sudoku) {
-        this.size = sudoku.size;
-        this.cells = sudoku.cells.stream()
+        this.cells = sudoku.cells
+                .stream()
                 .map(Cell::new)
+                .collect(toSet());
+        this.size = sudoku.size;
+    }
+
+    public Set<CellGroup> getAllCellGroups() {
+        var cellGroups = new HashSet<CellGroup>();
+        for (CellGroupType type : CellGroupType.values()) {
+            cellGroups.addAll(getAllCellGroupsOfSameType(type));
+        }
+        return cellGroups;
+    }
+
+    private Set<CellGroup> getAllCellGroupsOfSameType(CellGroupType cellGroupType) {
+        return cells.stream()
+                .collect(groupingBy(cell -> cell.getPosition().getCellGroupIndex(cellGroupType), toSet()))
+                .values()
+                .stream()
+                .map(CellGroup::new)
                 .collect(toSet());
     }
 
@@ -28,36 +47,30 @@ public class Sudoku {
         return new HashSet<>(cells);
     }
 
-    public List<Cell> getUnsolvedCells() {
-        return cells.stream()
-                .filter(Cell::isEmpty)
-                .toList();
+    public Set<Cell> getUnsolvedCells() {
+        return cells.stream().filter(Cell::isEmpty).collect(toSet());
     }
 
-    public Cell getCellAt(int x, int y) {
-        var cellOptional = cells.stream()
-                .filter(p -> p.getPosition().row() == x && p.getPosition().column() == y)
+    public Cell getCellAt(CellPosition position) {
+        var optionalCell = cells.stream()
+                .filter(cell -> cell.getPosition().equals(position))
                 .findAny();
-        if(cellOptional.isEmpty())
-            throw new IllegalArgumentException("sudoku position is out of bounds: " + x + " " + y);
-        return cellOptional.get();
+        if (optionalCell.isEmpty())
+            throw new IllegalStateException("no cell found at: row:" + position.row() + " column:" + position.column());
+        return optionalCell.get();
     }
 
-    private Set<CellGroup> getCellGroups(CellGroupType groupType) {
+    public Cell getCellAt(int row, int column) {
+        if (!coordinatesAreValid(row, column))
+            throw new IllegalStateException("no cell found at: row:" + row + " column:" + column);
         return cells.stream()
-                .collect(groupingBy(cell -> groupType.typeIndexOfPosition(cell.getPosition()), toSet()))
-                .values()
-                .stream()
-                .map(groupedCells -> new CellGroup(groupedCells, groupType))
-                .collect(toSet());
+                .filter(cell -> (cell.getPosition().row() == row) && (cell.getPosition().column() == column))
+                .toList()
+                .get(0);
     }
 
-    public Set<CellGroup> getAllCellGroups() {
-        Set<CellGroup> groups = new HashSet<>();
-        for (CellGroupType type : CellGroupType.values()) {
-            groups.addAll(getCellGroups(type));
-        }
-        return groups;
+    private boolean coordinatesAreValid(int row, int column) {
+        return ((0 <= row) && (row < size)) && ((0 <= column) && (column < size));
     }
 
     public boolean isFilled() {

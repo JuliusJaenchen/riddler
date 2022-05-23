@@ -1,5 +1,5 @@
 package hwr.oop.riddler.logic.solver;
-
+/*
 import hwr.oop.riddler.logic.SudokuValidator;
 import hwr.oop.riddler.logic.solver.component.PossiblesEliminator;
 import hwr.oop.riddler.logic.solver.component.SinglePossibleImplementor;
@@ -22,8 +22,8 @@ public class BacktrackingSolver2 {
         workingCopy = new Sudoku(sudoku);
 
         var possibleCells = workingCopy.getUnsolvedCells();
-        while (possibleCells.size() > 0) {
-            var targetCell = possibleCells.get(0);
+        while (!possibleCells.isEmpty()) {
+            var targetCell = possibleCells.iterator().next();
             assumeValue(targetCell);
 
             if (new SudokuValidator(workingCopy).isInvalid()) {
@@ -63,3 +63,4 @@ public class BacktrackingSolver2 {
         throw new IllegalStateException("empty cell has no possible values");
     }
 }
+*/

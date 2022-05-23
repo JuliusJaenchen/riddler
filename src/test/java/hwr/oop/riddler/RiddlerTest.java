@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 
 class RiddlerTest {
-
     @Test
     void riddler_solvesTestSudokuFiles() {
         for (int i = 1; i <= 2; i++) {

@@ -1,7 +1,7 @@
 package hwr.oop.riddler.io;
 
 import hwr.oop.riddler.model.Sudoku;
-import hwr.oop.riddler.model.SudokuBuilder;
+import hwr.oop.riddler.logic.SudokuBuilder;
 
 import java.io.*;
 
@@ -31,7 +31,7 @@ public class SudokuParser {
                 builder.set(sudoku[row][column], row, column);
             }
         }
-        return builder.toSudoku();
+        return builder.buildSudoku();
     }
 
     private int[][] fileToArray(File inputFile) {

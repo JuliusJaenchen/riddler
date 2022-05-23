@@ -1,52 +1,20 @@
 package hwr.oop.riddler.model.component;
 
-import lombok.Getter;
-
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
-import static java.util.function.Predicate.*;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toSet;
 
-/**
- * A CellGroup is either a Row, Column, or a Box. These are treated Identically. A polymorphic implementation would
- * have lead to duplicate code.
- */
-public class CellGroup {
-    @Getter
-    private final Set<Cell> cells;
-    @Getter
-    private final CellGroupType type;
-
-    public CellGroup(Set<Cell> contents, CellGroupType type) {
-        this.cells = new HashSet<>(contents);
-        this.type = type;
-    }
-
+public record CellGroup(Set<Cell> cells) {
     public Set<Cell> getUnsolvedCells() {
         return cells.stream()
-                .filter(not(Cell::isFilled))
+                .filter(Cell::isEmpty)
                 .collect(toSet());
     }
 
-    public Set<Integer> getAllValues() {
+    public Set<Integer> getCellValues() {
         return cells.stream()
                 .filter(Cell::isFilled)
                 .map(Cell::getValue)
                 .collect(toSet());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CellGroup group = (CellGroup) o;
-        return Objects.equals(cells, group.cells) && type == group.type;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cells, type);
     }
 }

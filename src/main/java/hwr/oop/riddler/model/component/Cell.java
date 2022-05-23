@@ -60,12 +60,4 @@ public class Cell {
             throw new IllegalStateException("empty cell has no value");
         return value;
     }
-
-    public void resetValue() {
-        value = 0;
-    }
-
-    public void setImpossibles(Set<Integer> impossibles) {
-        this.impossibles = impossibles;
-    }
 }

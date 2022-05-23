@@ -1,5 +1,6 @@
-package hwr.oop.riddler.model;
+package hwr.oop.riddler.logic;
 
+import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.component.Cell;
 import hwr.oop.riddler.model.component.CellPosition;
 
@@ -7,8 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SudokuBuilder {
-    private Set<Cell> cells = new HashSet<>();
-    private int sudokuSize;
+    private final Set<Cell> cells = new HashSet<>();
+    private final int sudokuSize;
 
     public SudokuBuilder(int sudokuSize) {
         this.sudokuSize = sudokuSize;
@@ -22,12 +23,12 @@ public class SudokuBuilder {
         cells.add(cell);
     }
 
-    public Sudoku toSudoku() {
-        fillUnfilledCells();
+    public Sudoku buildSudoku() {
+        addEmptyCells();
         return new Sudoku(cells);
     }
 
-    private void fillUnfilledCells() {
+    private void addEmptyCells() {
         for (int row = 0; row < sudokuSize; row++) {
             for (int column = 0; column < sudokuSize; column++) {
                 if(!hasCellAt(row, column)) {

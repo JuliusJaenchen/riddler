@@ -7,14 +7,14 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CellTest {/*
+class CellTest {
     private Cell filledCell;
     private Cell emptyCell;
 
     @BeforeEach
     void setup() {
-        filledCell = new Cell(2, new CellPosition(0));
-        emptyCell = new Cell(new CellPosition(1));
+        filledCell = new Cell(2, new CellPosition(0, 0, 0));
+        emptyCell = new Cell(new CellPosition(1, 1, 0));
     }
 
     @Test
@@ -29,23 +29,12 @@ class CellTest {/*
 
     @Test
     void emptyCell_setValueZeroThrowsException() {
-        try {
-            emptyCell.setValue(0);
-            fail();
-        } catch (IllegalArgumentException ignored) {
-        } catch (Exception ignored) {
-            fail();
-        }
+        assertThrows(IllegalArgumentException.class, () -> emptyCell.setValue(0));
     }
 
     @Test
     void emptyCell_getValueFails() {
-        try {
-            emptyCell.getValue();
-            fail(".getValue() on an empty Cell should thow an IllegalStateException");
-        } catch (IllegalStateException ignored) {
-        }
-
+        assertThrows(IllegalStateException.class, () -> emptyCell.getValue());
     }
 
     @Test
@@ -91,11 +80,7 @@ class CellTest {/*
 
     @Test
     void filledCell_setValueFails() {
-        try {
-            filledCell.setValue(1);
-            fail();
-        } catch (IllegalStateException ignore) {
-        }
+        assertThrows(IllegalStateException.class, () -> filledCell.setValue(1));
     }
 
     @Test
@@ -112,5 +97,15 @@ class CellTest {/*
     void filledCell_canBeCopied() {
         var copiedCell = new Cell(filledCell);
         assertEquals(2, copiedCell.getValue());
-    }*/
+    }
+
+    @Test
+    void emptyCell_setImpossible_zero() {
+        assertThrows(IllegalArgumentException.class, () -> emptyCell.addImpossible(0));
+    }
+
+    @Test
+    void emptyCell_getPosition() {
+        assertEquals(new CellPosition(1, 1, 0), emptyCell.getPosition());
+    }
 }
