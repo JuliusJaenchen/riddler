@@ -1,6 +1,7 @@
 package hwr.oop.riddler.model;
 
 import hwr.oop.riddler.model.component.*;
+import hwr.oop.riddler.model.constraints.*;
 import lombok.Getter;
 
 import java.util.*;
@@ -8,7 +9,7 @@ import java.util.*;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toSet;
 
-public class Sudoku {
+public class Sudoku implements Validatable {
     private final Set<Cell> cells;
     @Getter
     private final int size;
@@ -48,16 +49,13 @@ public class Sudoku {
     }
 
     public Set<Cell> getUnsolvedCells() {
-        return cells.stream().filter(Cell::isEmpty).collect(toSet());
+        return cells.stream()
+                .filter(Cell::isEmpty)
+                .collect(toSet());
     }
 
     public Cell getCellAt(CellPosition position) {
-        var optionalCell = cells.stream()
-                .filter(cell -> cell.getPosition().equals(position))
-                .findAny();
-        if (optionalCell.isEmpty())
-            throw new IllegalStateException("no cell found at: row:" + position.row() + " column:" + position.column());
-        return optionalCell.get();
+        return getCellAt(position.row(), position.column());
     }
 
     public Cell getCellAt(int row, int column) {
@@ -75,5 +73,12 @@ public class Sudoku {
 
     public boolean isFilled() {
         return getUnsolvedCells().isEmpty();
+    }
+
+    private static final Set<Constraint<Sudoku>> CONSTRAINTS = Set.of(new SudokuAllCellGroupsAreValidConstraint());
+
+    @Override
+    public boolean isValid() {
+        return CONSTRAINTS.stream().allMatch(sudokuConstraint -> sudokuConstraint.isSatisfiedBy(this));
     }
 }

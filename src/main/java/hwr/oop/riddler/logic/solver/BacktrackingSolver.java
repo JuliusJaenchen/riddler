@@ -1,10 +1,11 @@
 package hwr.oop.riddler.logic.solver;
 
 import hwr.oop.riddler.io.SudokuPrinter;
-import hwr.oop.riddler.logic.SudokuValidator;
 import hwr.oop.riddler.logic.solver.component.*;
 import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.component.Cell;
+import hwr.oop.riddler.model.component.FilledCellContent;
+import hwr.oop.riddler.model.component.UnfilledCellContent;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -30,7 +31,7 @@ public class BacktrackingSolver {
                 break;
         }
 
-        if (!new SudokuValidator(sudoku).isValid()) {
+        if (!sudoku.isValid()) {
             backtrack();
             workingCopy = solve(workingCopy);
         }
@@ -72,10 +73,14 @@ public class BacktrackingSolver {
     }
 
     private int getAPossibleValue(Cell cell) {
-        for (int value = 1; value <= workingCopy.getSize(); value++) {
-            if (!cell.getImpossibles().contains(value))
-                return value;
+        if(cell.getContent() instanceof UnfilledCellContent content) {
+            for (int value = 1; value <= workingCopy.getSize(); value++) {
+                if (!content.getImpossibles().contains(value))
+                    return value;
+            }
+        } else {
+            throw new IllegalArgumentException("cell is already filled");
         }
-        throw new IllegalStateException("empty cell has no possible values");
+        throw new IllegalStateException("cell has no possible values");
     }
 }

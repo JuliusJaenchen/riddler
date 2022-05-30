@@ -14,13 +14,7 @@ public class SudokuParser {
     }
 
     public Sudoku parse(int[][] sudokuArray) {
-        return new Sudoku(parseArray(sudokuArray));
-    }
-
-    private String sanitizeLine(String line) {
-        return line.trim()
-                .replace(" ", "")
-                .replace("_", "0");
+        return parseArray(sudokuArray);
     }
 
     private Sudoku parseArray(int[][] sudoku) {
@@ -46,6 +40,12 @@ public class SudokuParser {
         } catch (IOException e) {
             throw new UncheckedIOException("Could not parse input file " + inputFile.getName(), e);
         }
+    }
+
+    private String sanitizeLine(String line) {
+        return line.trim()
+                .replace(" ", "")
+                .replace("_", "0");
     }
 
     private int[] lineToIntArray(String line) {

@@ -43,11 +43,11 @@ class CellTest {
         assertEquals(2, emptyCell.getValue());
     }
 
-    @Test
+    /*@Test
     void emptyCell_addImpossible() {
         emptyCell.addImpossible(1);
         assertEquals(Set.of(1), emptyCell.getImpossibles());
-    }
+    }*/
 
     @Test
     void emptyCell_addImpossibleRetrunsTrue() {
@@ -60,7 +60,7 @@ class CellTest {
         assertFalse(emptyCell.addImpossible(1));
     }
 
-    @Test
+    /*@Test
     void emptyCell_addImpossibles() {
         emptyCell.addImpossibles(Set.of(1, 2));
         assertEquals(Set.of(1, 2), emptyCell.getImpossibles());
@@ -71,7 +71,7 @@ class CellTest {
         emptyCell.addImpossibles(Set.of(1, 3, 4));
         var copy = new Cell(emptyCell);
         assertEquals(Set.of(1, 3, 4), copy.getImpossibles());
-    }
+    }*/
 
     @Test
     void filledCell_getValue() {
