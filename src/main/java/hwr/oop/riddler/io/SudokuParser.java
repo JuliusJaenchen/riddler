@@ -5,11 +5,9 @@ import hwr.oop.riddler.logic.SudokuBuilder;
 
 import java.io.*;
 
-import static java.util.function.Predicate.not;
-
 public class SudokuParser {
     public Sudoku parse(File inputFile) {
-        var sudokuArray = fileToArray(inputFile);
+        var sudokuArray = readArrayFromFile(inputFile);
         return parseArray(sudokuArray);
     }
 
@@ -28,24 +26,14 @@ public class SudokuParser {
         return builder.buildSudoku();
     }
 
-    private int[][] fileToArray(File inputFile) {
-        try (var fileReader = new FileReader(inputFile);
-             var bufferedReader = new BufferedReader(fileReader)
-        ) {
-            return bufferedReader.lines()
-                    .map(this::sanitizeLine)
-                    .filter(not(String::isEmpty))
+    private int[][] readArrayFromFile(File inputFile) {
+        try (var sudokuFileReader = new SudokuFileReader(inputFile)) {
+            return sudokuFileReader.lines()
                     .map(this::lineToIntArray)
                     .toArray(int[][]::new);
         } catch (IOException e) {
             throw new UncheckedIOException("Could not parse input file " + inputFile.getName(), e);
         }
-    }
-
-    private String sanitizeLine(String line) {
-        return line.trim()
-                .replace(" ", "")
-                .replace("_", "0");
     }
 
     private int[] lineToIntArray(String line) {
