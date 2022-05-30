@@ -15,7 +15,6 @@ public class SudokuBuilder {
         this.sudokuSize = sudokuSize;
     }
 
-
     public void set(int value, int row, int column) {
         int boxIndex = calculateBoxIndex(row, column, sudokuSize);
         CellPosition position = new CellPosition(row, column, boxIndex);

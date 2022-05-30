@@ -1,6 +1,6 @@
 package hwr.oop.riddler;
 
-import hwr.oop.riddler.io.RiddlerArgumentParser;
+import hwr.oop.riddler.io.RiddlerArguments;
 import hwr.oop.riddler.io.SudokuParser;
 import hwr.oop.riddler.io.SudokuPrinter;
 import hwr.oop.riddler.logic.solver.BacktrackingSolver;
@@ -10,12 +10,12 @@ import java.io.File;
 
 public class Riddler {
     public static void main(String[] args) throws IllegalArgumentException {
-        var argumentParser = new RiddlerArgumentParser(args);
+        var arguments = new RiddlerArguments(args);
 
-        var parser = new SudokuParser();
+        var sudokuParser = new SudokuParser();
         var solver = new BacktrackingSolver();
 
-        var sudoku = parser.parse(new File(argumentParser.sudokuFilePath()));
+        var sudoku = sudokuParser.parse(new File(arguments.sudokuFilePath()));
 
         Sudoku solvedSudoku = solver.solve(sudoku);
 
