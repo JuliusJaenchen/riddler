@@ -28,7 +28,7 @@ public class Sudoku {
                 .stream()
                 .map(Cell::new)
                 .collect(toSet());
-        this.size = sudoku.size; //für sudoku.isValid() lieber ein extra validator objekt oder in die sudoku klasse?
+        this.size = sudoku.size;
     }
 
     public Set<CellGroup> getAllCellGroups() {
