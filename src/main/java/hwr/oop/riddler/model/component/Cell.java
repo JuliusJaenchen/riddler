@@ -36,7 +36,7 @@ public class Cell {
 
     public int getValue() {
         if (isEmpty()) {
-            throw new IllegalStateException("empty cell has no value");
+            throw new IllegalStateException("empty cell has no numericValue");
         }
         return filledContent.value();
     }
