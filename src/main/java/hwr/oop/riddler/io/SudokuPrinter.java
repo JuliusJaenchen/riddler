@@ -43,6 +43,6 @@ public class SudokuPrinter {
     }
 
     private String cellToString(Cell cell) {
-        return cell.isFilled() ? String.valueOf(cell.getFilledContent().value()) : "_";
+        return cell.isFilled() ? String.valueOf(cell.getValue()) : "_";
     }
 }

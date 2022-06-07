@@ -24,8 +24,7 @@ public class PossiblesEliminator implements SolvingComponent {
     private void removePossibleCellValues(CellGroup cellGroup) {
         for (Cell cell : cellGroup.cells()) {
             if (cell.isEmpty()) {
-                var content = cell.getUnfilledContent();
-                boolean addedImpossibles = content.addImpossibles(cellGroup.getCellValues());
+                boolean addedImpossibles = cell.addImpossibles(cellGroup.getCellValues());
                 if (addedImpossibles)
                     this.changesWereMade = true;
             }

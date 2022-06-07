@@ -75,9 +75,8 @@ public class BacktrackingSolver {
 
     private int getAPossibleValue(Cell cell) {
         if (cell.isEmpty()) {
-            var content = cell.getUnfilledContent();
             for (int value = 1; value <= workingCopy.getSize(); value++) {
-                if (!content.getImpossibles().contains(value))
+                if (!cell.getImpossibles().contains(value))
                     return value;
             }
         } else {

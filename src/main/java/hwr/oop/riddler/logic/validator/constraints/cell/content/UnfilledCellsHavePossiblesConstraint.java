@@ -10,6 +10,6 @@ public class UnfilledCellsHavePossiblesConstraint implements Constraint {
         return sudoku.getCells()
                 .stream()
                 .filter(Cell::isEmpty)
-                .allMatch(cell -> cell.getUnfilledContent().getImpossibles().size() < sudoku.getSize());
+                .allMatch(cell -> cell.getImpossibles().size() < sudoku.getSize());
     }
 }
