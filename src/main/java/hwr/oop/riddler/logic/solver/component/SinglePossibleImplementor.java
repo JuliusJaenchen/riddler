@@ -2,7 +2,6 @@ package hwr.oop.riddler.logic.solver.component;
 
 import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.component.Cell;
-import hwr.oop.riddler.model.component.UnfilledCellContent;
 
 public class SinglePossibleImplementor implements SolvingComponent {
     private Sudoku sudoku;
@@ -27,21 +26,20 @@ public class SinglePossibleImplementor implements SolvingComponent {
 
     private void fillCellWithOnlyPossibleValue(Cell cell) {
         if (cell.isEmpty()) {
-            var content = cell.getUnfilledContent();
-            if (cellHasOnePossibleValue(content)) {
-                cell.setValue(onlyPossibleValue(content));
+            if (cellHasOnePossibleValue(cell)) {
+                cell.setValue(onlyPossibleValue(cell));
                 changesWereMade = true;
             }
         }
     }
 
-    private boolean cellHasOnePossibleValue(UnfilledCellContent content) {
-        return sudoku.getSize() - content.getImpossibles().size() == 1;
+    private boolean cellHasOnePossibleValue(Cell cell) {
+        return sudoku.getSize() - cell.getImpossibles().size() == 1;
     }
 
-    private int onlyPossibleValue(UnfilledCellContent content) {
+    private int onlyPossibleValue(Cell cell) {
         for (int value = 1; value <= sudoku.getSize(); value++) {
-            if (!content.getImpossibles().contains(value))
+            if (!cell.getImpossibles().contains(value))
                 return value;
         }
         throw new IllegalArgumentException("cellcontent has no possible value");
