@@ -1,15 +1,19 @@
 package hwr.oop.riddler.model;
 
-import hwr.oop.riddler.model.component.*;
-import hwr.oop.riddler.model.constraints.*;
+import hwr.oop.riddler.model.component.Cell;
+import hwr.oop.riddler.model.component.CellGroup;
+import hwr.oop.riddler.model.component.CellGroupIndices;
+import hwr.oop.riddler.model.component.CellGroupType;
 import lombok.Getter;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toSet;
 
-public class Sudoku implements Validatable {
+public class Sudoku {
     private final Set<Cell> cells;
     @Getter
     private final int size;
@@ -24,7 +28,7 @@ public class Sudoku implements Validatable {
                 .stream()
                 .map(Cell::new)
                 .collect(toSet());
-        this.size = sudoku.size;
+        this.size = sudoku.size; //für sudoku.isValid() lieber ein extra validator objekt oder in die sudoku klasse?
     }
 
     public Set<CellGroup> getAllCellGroups() {
@@ -37,7 +41,7 @@ public class Sudoku implements Validatable {
 
     private Set<CellGroup> getAllCellGroupsOfSameType(CellGroupType cellGroupType) {
         return cells.stream()
-                .collect(groupingBy(cell -> cell.getPosition().getCellGroupIndex(cellGroupType), toSet()))
+                .collect(groupingBy(cell -> cell.getCellGroupIndices().getCellGroupIndex(cellGroupType), toSet()))
                 .values()
                 .stream()
                 .map(CellGroup::new)
@@ -54,31 +58,17 @@ public class Sudoku implements Validatable {
                 .collect(toSet());
     }
 
-    public Cell getCellAt(CellPosition position) {
+    public Optional<Cell> getCellAt(CellGroupIndices position) {
         return getCellAt(position.row(), position.column());
     }
 
-    public Cell getCellAt(int row, int column) {
-        if (!coordinatesAreValid(row, column))
-            throw new IllegalStateException("no cell found at: row:" + row + " column:" + column);
+    public Optional<Cell> getCellAt(int row, int column) {
         return cells.stream()
-                .filter(cell -> (cell.getPosition().row() == row) && (cell.getPosition().column() == column))
-                .toList()
-                .get(0);
-    }
-
-    private boolean coordinatesAreValid(int row, int column) {
-        return ((0 <= row) && (row < size)) && ((0 <= column) && (column < size));
+                .filter(cell -> (cell.getCellGroupIndices().row() == row) && (cell.getCellGroupIndices().column() == column))
+                .findAny();
     }
 
     public boolean isFilled() {
         return getUnsolvedCells().isEmpty();
-    }
-
-    private static final Set<Constraint<Sudoku>> CONSTRAINTS = Set.of(new SudokuAllCellGroupsAreValidConstraint());
-
-    @Override
-    public boolean isValid() {
-        return CONSTRAINTS.stream().allMatch(sudokuConstraint -> sudokuConstraint.isSatisfiedBy(this));
     }
 }

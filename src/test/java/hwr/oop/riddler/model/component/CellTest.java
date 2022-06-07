@@ -3,8 +3,6 @@ package hwr.oop.riddler.model.component;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class CellTest {
@@ -13,8 +11,8 @@ class CellTest {
 
     @BeforeEach
     void setup() {
-        filledCell = new Cell(2, new CellPosition(0, 0, 0));
-        emptyCell = new Cell(new CellPosition(1, 1, 0));
+        filledCell = new Cell(2, new CellGroupIndices(0, 0, 0));
+        emptyCell = new Cell(new CellGroupIndices(1, 1, 0));
     }
 
     @Test
@@ -106,6 +104,6 @@ class CellTest {
 
     @Test
     void emptyCell_getPosition() {
-        assertEquals(new CellPosition(1, 1, 0), emptyCell.getPosition());
+        assertEquals(new CellGroupIndices(1, 1, 0), emptyCell.getCellGroupIndices());
     }
 }

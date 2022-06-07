@@ -1,11 +1,12 @@
 package hwr.oop.riddler.logic.solver;
 
 import hwr.oop.riddler.io.SudokuPrinter;
-import hwr.oop.riddler.logic.solver.component.*;
+import hwr.oop.riddler.logic.solver.component.PossiblesEliminator;
+import hwr.oop.riddler.logic.solver.component.SinglePossibleImplementor;
+import hwr.oop.riddler.logic.solver.component.SolvingComponent;
+import hwr.oop.riddler.logic.validator.SudokuValidator;
 import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.component.Cell;
-import hwr.oop.riddler.model.component.FilledCellContent;
-import hwr.oop.riddler.model.component.UnfilledCellContent;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -14,7 +15,6 @@ import java.util.Set;
 public class BacktrackingSolver {
     private final SolvingComponent[] solvingComponents = {
             new PossiblesEliminator(),
-            //new AdvancedPossiblesEliminator(), -- TODO: work on this once solver works
             new SinglePossibleImplementor(),
     };
 
@@ -31,7 +31,7 @@ public class BacktrackingSolver {
                 break;
         }
 
-        if (!sudoku.isValid()) {
+        if (!new SudokuValidator(sudoku).isValid()) {
             backtrack();
             workingCopy = solve(workingCopy);
         }
@@ -61,6 +61,7 @@ public class BacktrackingSolver {
         Cell unsolvedCell = getNextUnsolvedCell();
         int assumedValue = getAPossibleValue(unsolvedCell);
 
+
         unsolvedCell.addImpossible(assumedValue);
         sudokuBackups.push(new Sudoku(workingCopy));
 
@@ -73,7 +74,8 @@ public class BacktrackingSolver {
     }
 
     private int getAPossibleValue(Cell cell) {
-        if(cell.getContent() instanceof UnfilledCellContent content) {
+        if (cell.isEmpty()) {
+            var content = cell.getUnfilledContent();
             for (int value = 1; value <= workingCopy.getSize(); value++) {
                 if (!content.getImpossibles().contains(value))
                     return value;

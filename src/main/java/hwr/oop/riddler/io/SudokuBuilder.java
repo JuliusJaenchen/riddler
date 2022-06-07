@@ -1,8 +1,8 @@
-package hwr.oop.riddler.logic;
+package hwr.oop.riddler.io;
 
 import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.component.Cell;
-import hwr.oop.riddler.model.component.CellPosition;
+import hwr.oop.riddler.model.component.CellGroupIndices;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,14 +15,14 @@ public class SudokuBuilder {
         this.sudokuSize = sudokuSize;
     }
 
-    public void set(int value, int row, int column) {
-        int boxIndex = calculateBoxIndex(row, column, sudokuSize);
-        CellPosition position = new CellPosition(row, column, boxIndex);
+    public SudokuBuilder fillCell(CellCoordinate coordinate, int value) {
+        CellGroupIndices position = coordinate.toCellIndices(sudokuSize);
         Cell cell = new Cell(value, position);
         cells.add(cell);
+        return this;
     }
 
-    public Sudoku buildSudoku() {
+    public Sudoku build() {
         addEmptyCells();
         return new Sudoku(cells);
     }
@@ -31,18 +31,15 @@ public class SudokuBuilder {
         for (int row = 0; row < sudokuSize; row++) {
             for (int column = 0; column < sudokuSize; column++) {
                 if(!hasCellAt(row, column)) {
-                    set(0, row, column);
+                    fillCell(new CellCoordinate(row, column), 0);
                 }
             }
         }
     }
 
     private boolean hasCellAt(int row, int column) {
-        return cells.stream().map(Cell::getPosition).anyMatch(position -> position.row() == row && position.column() == column);
-    }
-
-    private int calculateBoxIndex(int row, int column, int sudokuSize) {
-        int boxSize = (int) Math.sqrt(sudokuSize);
-        return (row / boxSize) * boxSize + (column / boxSize);
+        return cells.stream()
+                .map(Cell::getCellGroupIndices)
+                .anyMatch(position -> position.row() == row && position.column() == column);
     }
 }

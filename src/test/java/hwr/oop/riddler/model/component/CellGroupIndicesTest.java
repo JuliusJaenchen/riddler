@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 
-class CellPositionTest {
-    CellPosition position1 = new CellPosition(3, 3, 4);
-    CellPosition position1copy = new CellPosition(3, 3, 4);
-    CellPosition position2 = new CellPosition(1, 0, 0);
+class CellGroupIndicesTest {
+    CellGroupIndices position1 = new CellGroupIndices(3, 3, 4);
+    CellGroupIndices position1copy = new CellGroupIndices(3, 3, 4);
+    CellGroupIndices position2 = new CellGroupIndices(1, 0, 0);
 
     @Test
     void position1_isEqualTo_position1copy() {

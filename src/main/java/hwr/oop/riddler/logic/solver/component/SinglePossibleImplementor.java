@@ -26,7 +26,8 @@ public class SinglePossibleImplementor implements SolvingComponent {
     }
 
     private void fillCellWithOnlyPossibleValue(Cell cell) {
-        if (cell.getContent() instanceof UnfilledCellContent content) {
+        if (cell.isEmpty()) {
+            var content = cell.getUnfilledContent();
             if (cellHasOnePossibleValue(content)) {
                 cell.setValue(onlyPossibleValue(content));
                 changesWereMade = true;

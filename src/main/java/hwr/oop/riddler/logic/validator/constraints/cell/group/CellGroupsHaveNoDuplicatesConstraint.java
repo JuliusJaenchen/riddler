@@ -1,15 +1,21 @@
-package hwr.oop.riddler.model.constraints.group;
+package hwr.oop.riddler.logic.validator.constraints.cell.group;
 
+import hwr.oop.riddler.logic.validator.constraints.Constraint;
+import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.component.Cell;
 import hwr.oop.riddler.model.component.CellGroup;
-import hwr.oop.riddler.model.constraints.Constraint;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class CellGroupHasNoDuplicateConstraint implements Constraint<CellGroup> {
+public class CellGroupsHaveNoDuplicatesConstraint implements Constraint {
     @Override
-    public boolean isSatisfiedBy(CellGroup cellGroup) {
+    public boolean isSatisfiedBy(Sudoku sudoku) {
+        return sudoku.getAllCellGroups().stream()
+                .allMatch(this::cellGroupSatisfiesConstraint);
+    }
+
+    private boolean cellGroupSatisfiesConstraint(CellGroup cellGroup) {
         Set<Integer> encounteredValues = new HashSet<>();
         for (Cell cell : cellGroup.cells()) {
             if (cell.isFilled()) {

@@ -1,39 +1,44 @@
 package hwr.oop.riddler.model.component;
 
-import hwr.oop.riddler.model.constraints.Constraint;
-import hwr.oop.riddler.model.constraints.Validatable;
-import hwr.oop.riddler.model.constraints.cell.CellContentIsValidConstraint;
 import lombok.Getter;
 
-import java.util.Set;
-
-public class Cell implements Validatable {
+public class Cell {
     @Getter
-    private CellContent content;
-    @Getter
-    private final CellPosition position;
+    private final CellGroupIndices cellGroupIndices;
 
-    public Cell(CellPosition position) {
-        this.position = position;
-        content = new UnfilledCellContent();
+    //went with the following solution instead of one cellContent attribute to avoid casts and instanceof checks
+    private UnfilledCellContent unfilledContent;
+    private FilledCellContent filledContent;
+
+    public Cell(CellGroupIndices cellGroupIndices) {
+        this.cellGroupIndices = cellGroupIndices;
+        unfilledContent = new UnfilledCellContent();
     }
 
-    public Cell(int value, CellPosition position) {
-        this.content = FilledCellContent.fromInteger(value);
-        this.position = position;
+    public Cell(int value, CellGroupIndices cellGroupIndices) {
+        this.filledContent = new FilledCellContent(value);
+        this.cellGroupIndices = cellGroupIndices;
     }
 
     public Cell(Cell cell) {
-        this.content = cell.content; //TODO clone content
-        this.position = cell.position;
+        this.unfilledContent = new UnfilledCellContent(cell.unfilledContent);
+        this.filledContent = cell.filledContent;
+        this.cellGroupIndices = cell.cellGroupIndices;
     }
 
     public boolean isFilled() {
-        return content instanceof FilledCellContent;
+        return filledContent != null;
     }
 
     public boolean isEmpty() {
         return !isFilled();
+    }
+
+    public int getValue() {
+        if (isEmpty()) {
+            throw new IllegalStateException("empty cell has no value");
+        }
+        return filledContent.value();
     }
 
     public void setValue(int value) {
@@ -41,7 +46,8 @@ public class Cell implements Validatable {
             throw new IllegalArgumentException("Value must be greater than 0");
         if (this.isFilled())
             throw new IllegalStateException("Value was already set");
-        this.content = new FilledCellContent(value);
+        this.unfilledContent = null;
+        this.filledContent = new FilledCellContent(value);
     }
 
     public boolean addImpossible(int impossibleValue) {
@@ -50,17 +56,15 @@ public class Cell implements Validatable {
         throw new UnsupportedOperationException("removed function");
     }
 
-    public int getValue() {
-        if (content instanceof FilledCellContent filledCellContent) {
-            return filledCellContent.value();
-        }
-        throw new IllegalStateException("empty cell has no value");
+    public UnfilledCellContent getUnfilledContent() {
+        if (isFilled())
+            throw new IllegalStateException("Cannot get unfilled cellcontent of filled cell");
+        return unfilledContent;
     }
 
-    private static final Set<Constraint<Cell>> CONSTRAINTS = Set.of(new CellContentIsValidConstraint());
-
-    @Override
-    public boolean isValid() {
-        return CONSTRAINTS.stream().allMatch(cellConstraint -> cellConstraint.isSatisfiedBy(this));
+    public FilledCellContent getFilledContent() {
+        if (isEmpty())
+            throw new IllegalStateException("Cannot get filled cellcontent of empty cell");
+        return filledContent;
     }
 }

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -15,10 +14,10 @@ class CellGroupTest {
     @BeforeEach
     private void setup() {
         cells = Set.of(
-                new Cell(new CellPosition(0, 0, 0)),
-                new Cell(new CellPosition(1, 1, 0)),
-                new Cell(3, new CellPosition(2, 2, 0)),
-                new Cell(4, new CellPosition(3, 3, 4))
+                new Cell(new CellGroupIndices(0, 0, 0)),
+                new Cell(new CellGroupIndices(1, 1, 0)),
+                new Cell(3, new CellGroupIndices(2, 2, 0)),
+                new Cell(4, new CellGroupIndices(3, 3, 4))
         );
         cellGroup = new CellGroup(cells);
     }
@@ -26,12 +25,6 @@ class CellGroupTest {
     @Test
     void cellGroup_getCells() {
         assertEquals(cells, cellGroup.cells());
-    }
-
-    @Test
-    void cellGroup_getUnsolvedCells() {
-        Set<Cell> unsolvedCells = cells.stream().filter(Cell::isEmpty).collect(Collectors.toSet());
-        assertEquals(unsolvedCells, cellGroup.getUnsolvedCells());
     }
 
     @Test

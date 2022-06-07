@@ -1,6 +1,7 @@
 package hwr.oop.riddler.io;
 
 import hwr.oop.riddler.model.Sudoku;
+import hwr.oop.riddler.model.component.Cell;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -30,8 +31,8 @@ public class SudokuPrinter {
         builder.append("------ Solved Sudoku -------\n");
         for (int row = 0; row < sudoku.getSize(); row++) {
             for (int column = 0; column < sudoku.getSize(); column++) {
-                var cell = sudoku.getCellAt(row, column);
-                builder.append(cell.isFilled() ? cell.getValue() : "_");
+                var cellOptional = sudoku.getCellAt(row, column);
+                builder.append(cellOptional.map(this::cellToString).orElse("?"));
                 builder.append(" ");
             }
             builder.append("\n");
@@ -39,5 +40,9 @@ public class SudokuPrinter {
 
         builder.append("----------------------------\n");
         return builder.toString();
+    }
+
+    private String cellToString(Cell cell) {
+        return cell.isFilled() ? String.valueOf(cell.getFilledContent().value()) : "_";
     }
 }

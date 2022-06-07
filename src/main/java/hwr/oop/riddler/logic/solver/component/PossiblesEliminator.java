@@ -3,7 +3,6 @@ package hwr.oop.riddler.logic.solver.component;
 import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.component.Cell;
 import hwr.oop.riddler.model.component.CellGroup;
-import hwr.oop.riddler.model.component.UnfilledCellContent;
 
 public class PossiblesEliminator implements SolvingComponent {
     boolean changesWereMade;
@@ -24,9 +23,10 @@ public class PossiblesEliminator implements SolvingComponent {
 
     private void removePossibleCellValues(CellGroup cellGroup) {
         for (Cell cell : cellGroup.cells()) {
-            if(cell.getContent() instanceof UnfilledCellContent content) {
+            if (cell.isEmpty()) {
+                var content = cell.getUnfilledContent();
                 boolean addedImpossibles = content.addImpossibles(cellGroup.getCellValues());
-                if (addedImpossibles)   
+                if (addedImpossibles)
                     this.changesWereMade = true;
             }
         }
