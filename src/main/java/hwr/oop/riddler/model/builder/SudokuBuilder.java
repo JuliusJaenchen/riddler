@@ -1,4 +1,4 @@
-package hwr.oop.riddler.io;
+package hwr.oop.riddler.model.builder;
 
 import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.component.Cell;

@@ -1,8 +1,8 @@
-package hwr.oop.riddler.io;
+package hwr.oop.riddler.model.builder;
 
 import hwr.oop.riddler.model.component.CellGroupIndices;
 
-record CellCoordinate(int row, int column) {
+public record CellCoordinate(int row, int column) {
     public CellGroupIndices toCellIndices(int sudokuSize) {
         int boxIndex = calculateBoxIndex(sudokuSize);
         return new CellGroupIndices(row, column, boxIndex);

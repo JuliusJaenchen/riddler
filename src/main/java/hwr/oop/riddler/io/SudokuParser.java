@@ -1,6 +1,8 @@
 package hwr.oop.riddler.io;
 
 import hwr.oop.riddler.model.Sudoku;
+import hwr.oop.riddler.model.builder.CellCoordinate;
+import hwr.oop.riddler.model.builder.SudokuBuilder;
 
 import java.io.File;
 import java.io.IOException;
