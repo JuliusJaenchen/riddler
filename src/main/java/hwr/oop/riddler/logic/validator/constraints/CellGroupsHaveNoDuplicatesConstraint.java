@@ -1,6 +1,5 @@
-package hwr.oop.riddler.logic.validator.constraints.cell.group;
+package hwr.oop.riddler.logic.validator.constraints;
 
-import hwr.oop.riddler.logic.validator.constraints.Constraint;
 import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.component.Cell;
 import hwr.oop.riddler.model.component.CellGroup;

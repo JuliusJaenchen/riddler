@@ -3,7 +3,7 @@ package hwr.oop.riddler.logic.solver.component;
 import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.component.Cell;
 
-public class SinglePossibleImplementor implements SolvingComponent {
+public class SinglePossibleImplementer implements SolvingComponent {
     private Sudoku sudoku;
     private boolean changesWereMade;
 
@@ -13,10 +13,6 @@ public class SinglePossibleImplementor implements SolvingComponent {
         changesWereMade = false;
 
         this.sudoku.getCells().forEach(this::fillCellWithOnlyPossibleValue);
-
-        for (Cell cell : this.sudoku.getCells()) {
-            fillCellWithOnlyPossibleValue(cell);
-        }
     }
 
     @Override
@@ -25,23 +21,22 @@ public class SinglePossibleImplementor implements SolvingComponent {
     }
 
     private void fillCellWithOnlyPossibleValue(Cell cell) {
-        if (cell.isEmpty()) {
-            if (cellHasOnePossibleValue(cell)) {
-                cell.setValue(onlyPossibleValue(cell));
-                changesWereMade = true;
-            }
+        if (cell.isEmpty() && cellHasOnePossibleValue(cell)) {
+            cell.setValue(onlyPossibleValue(cell));
+            changesWereMade = true;
         }
     }
 
     private boolean cellHasOnePossibleValue(Cell cell) {
-        return sudoku.getSize() - cell.getImpossibles().size() == 1;
+        return sudoku.getSize() - cell.getImpossibleValues().size() == 1;
     }
 
     private int onlyPossibleValue(Cell cell) {
         for (int value = 1; value <= sudoku.getSize(); value++) {
-            if (!cell.getImpossibles().contains(value))
+            if (!cell.getImpossibleValues().contains(value))
                 return value;
         }
-        throw new IllegalArgumentException("cellcontent has no possible value");
+        //This exception can never be reached, since this state is caught by cellHasOnePossibleValue().
+        throw new IllegalArgumentException("cell content has no possible value");
     }
 }
