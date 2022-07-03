@@ -14,10 +14,10 @@ class CellGroupTest {
     @BeforeEach
     private void setup() {
         cells = Set.of(
-                new Cell(new CellGroupIndices(0, 0, 0)),
-                new Cell(new CellGroupIndices(1, 1, 0)),
-                new Cell(3, new CellGroupIndices(2, 2, 0)),
-                new Cell(4, new CellGroupIndices(3, 3, 4))
+                new Cell(new CellGroupIndicators(0, 0, 0)),
+                new Cell(new CellGroupIndicators(1, 1, 0)),
+                new Cell(3, new CellGroupIndicators(2, 2, 0)),
+                new Cell(4, new CellGroupIndicators(3, 3, 4))
         );
         cellGroup = new CellGroup(cells);
     }
