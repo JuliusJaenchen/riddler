@@ -31,8 +31,8 @@ public class SudokuPrinter {
         builder.append("------ Solved Sudoku -------\n");
         for (int row = 0; row < sudoku.getSize(); row++) {
             for (int column = 0; column < sudoku.getSize(); column++) {
-                var cellOptional = sudoku.getCellAt(row, column);
-                builder.append(cellOptional.map(this::cellToString).orElse("?"));
+                var cell = sudoku.getCellAt(row, column);
+                builder.append(cell.isFilled() ? cell.getValue() : "_");
                 builder.append(" ");
             }
             builder.append("\n");

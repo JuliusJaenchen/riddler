@@ -1,4 +1,4 @@
-package hwr.oop.riddler.io;
+package hwr.oop.riddler.io.parser;
 
 import java.io.*;
 import java.util.stream.Stream;
