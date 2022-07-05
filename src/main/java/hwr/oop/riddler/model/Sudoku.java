@@ -2,7 +2,6 @@ package hwr.oop.riddler.model;
 
 import hwr.oop.riddler.model.component.Cell;
 import hwr.oop.riddler.model.component.CellGroup;
-import hwr.oop.riddler.model.component.CellGroupIndices;
 import hwr.oop.riddler.model.component.CellGroupType;
 import lombok.Getter;
 
@@ -41,7 +40,7 @@ public class Sudoku {
 
     private Set<CellGroup> getAllCellGroupsOfSameType(CellGroupType cellGroupType) {
         return cells.stream()
-                .collect(groupingBy(cell -> cell.getCellGroupIndices().getCellGroupIndex(cellGroupType), toSet()))
+                .collect(groupingBy(cell -> cell.getCellGroupIndicators().getCellGroupIndicator(cellGroupType), toSet()))
                 .values()
                 .stream()
                 .map(CellGroup::new)
@@ -58,14 +57,13 @@ public class Sudoku {
                 .collect(toSet());
     }
 
-    public Optional<Cell> getCellAt(CellGroupIndices position) {
-        return getCellAt(position.row(), position.column());
-    }
-
-    public Optional<Cell> getCellAt(int row, int column) {
-        return cells.stream()
-                .filter(cell -> (cell.getCellGroupIndices().row() == row) && (cell.getCellGroupIndices().column() == column))
+    public Cell getCellAt(int row, int column) {
+        Optional<Cell> result = cells.stream()
+                .filter(cell -> (cell.getCellGroupIndicators().row() == row) && (cell.getCellGroupIndicators().column() == column))
                 .findAny();
+        if (result.isEmpty())
+            throw new IllegalStateException("no cell found at: " + row + ", " + column);
+        return result.get();
     }
 
     public boolean isFilled() {

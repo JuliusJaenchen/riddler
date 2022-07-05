@@ -1,4 +1,4 @@
-package hwr.oop.riddler.io;
+package hwr.oop.riddler.io.parser;
 
 import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.builder.CellCoordinate;
@@ -9,6 +9,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 public class SudokuParser {
+    public Sudoku parse(String sudokuFilePathname) {
+        return this.parse(new File(sudokuFilePathname));
+    }
+
     public Sudoku parse(File inputFile) {
         var sudokuArray = readArrayFromFile(inputFile);
         return parseArray(sudokuArray);

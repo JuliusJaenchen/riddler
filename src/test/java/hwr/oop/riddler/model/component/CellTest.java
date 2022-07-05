@@ -13,8 +13,8 @@ class CellTest {
 
     @BeforeEach
     void setup() {
-        filledCell = new Cell(2, new CellGroupIndices(0, 0, 0));
-        emptyCell = new Cell(new CellGroupIndices(1, 1, 0));
+        filledCell = new Cell(2, new CellGroupIndicators(0, 0, 0));
+        emptyCell = new Cell(new CellGroupIndicators(1, 1, 0));
     }
 
     @Test
@@ -45,32 +45,32 @@ class CellTest {
 
     @Test
     void emptyCell_addImpossible() {
-        emptyCell.addImpossible(1);
-        assertEquals(Set.of(1), emptyCell.getImpossibles());
+        emptyCell.addImpossibleValue(1);
+        assertEquals(Set.of(1), emptyCell.getImpossibleValues());
     }
 
     @Test
     void emptyCell_addImpossibleRetrunsTrue() {
-        assertTrue(emptyCell.addImpossible(1));
+        assertTrue(emptyCell.addImpossibleValue(1));
     }
 
     @Test
     void emptyCell_addDuplicateImpossibleReturnsFalse() {
-        emptyCell.addImpossible(1);
-        assertFalse(emptyCell.addImpossible(1));
+        emptyCell.addImpossibleValue(1);
+        assertFalse(emptyCell.addImpossibleValue(1));
     }
 
     @Test
     void emptyCell_addImpossibles() {
         emptyCell.addImpossibles(Set.of(1, 2));
-        assertEquals(Set.of(1, 2), emptyCell.getImpossibles());
+        assertEquals(Set.of(1, 2), emptyCell.getImpossibleValues());
     }
 
     @Test
     void emptyCell_canBeCopied() {
         emptyCell.addImpossibles(Set.of(1, 3, 4));
         var copy = new Cell(emptyCell);
-        assertEquals(Set.of(1, 3, 4), copy.getImpossibles());
+        assertEquals(Set.of(1, 3, 4), copy.getImpossibleValues());
     }
 
     @Test
@@ -101,11 +101,11 @@ class CellTest {
 
     @Test
     void emptyCell_setImpossible_zero() {
-        assertThrows(IllegalArgumentException.class, () -> emptyCell.addImpossible(0));
+        assertThrows(IllegalArgumentException.class, () -> emptyCell.addImpossibleValue(0));
     }
 
     @Test
     void emptyCell_getPosition() {
-        assertEquals(new CellGroupIndices(1, 1, 0), emptyCell.getCellGroupIndices());
+        assertEquals(new CellGroupIndicators(1, 1, 0), emptyCell.getCellGroupIndicators());
     }
 }

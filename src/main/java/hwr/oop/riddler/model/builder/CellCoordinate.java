@@ -1,11 +1,11 @@
 package hwr.oop.riddler.model.builder;
 
-import hwr.oop.riddler.model.component.CellGroupIndices;
+import hwr.oop.riddler.model.component.CellGroupIndicators;
 
 public record CellCoordinate(int row, int column) {
-    public CellGroupIndices toCellIndices(int sudokuSize) {
+    public CellGroupIndicators toCellGroupIndicators(int sudokuSize) {
         int boxIndex = calculateBoxIndex(sudokuSize);
-        return new CellGroupIndices(row, column, boxIndex);
+        return new CellGroupIndicators(row, column, boxIndex);
     }
 
     private int calculateBoxIndex(int sudokuSize) {

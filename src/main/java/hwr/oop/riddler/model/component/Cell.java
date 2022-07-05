@@ -7,29 +7,32 @@ import java.util.Set;
 
 public class Cell {
     @Getter
-    private final CellGroupIndices cellGroupIndices;
+    private final CellGroupIndicators cellGroupIndicators;
 
     private Integer value;
     @Getter
-    private Set<Integer> impossibles;
+    private Set<Integer> impossibleValues;
 
-    public Cell(CellGroupIndices cellGroupIndices) {
-        this.cellGroupIndices = cellGroupIndices;
-        impossibles = new HashSet<>();
+    public Cell(CellGroupIndicators cellGroupIndicators) {
+        this.cellGroupIndicators = cellGroupIndicators;
+        impossibleValues = new HashSet<>();
     }
 
-    public Cell(int value, CellGroupIndices cellGroupIndices) {
-        this.cellGroupIndices = cellGroupIndices;
-        this.value = value;
+    public Cell(int value, CellGroupIndicators cellGroupIndicators) {
+        this.cellGroupIndicators = cellGroupIndicators;
+        if (value == 0)
+            impossibleValues = new HashSet<>();
+        else
+            this.value = value;
     }
 
     public Cell(Cell cell) {
         this.value = cell.value;
-        if (cell.impossibles != null)
-            this.impossibles = new HashSet<>(cell.impossibles);
+        if (cell.impossibleValues != null)
+            this.impossibleValues = new HashSet<>(cell.impossibleValues);
         else
-            this.impossibles = null;
-        this.cellGroupIndices = cell.cellGroupIndices;
+            this.impossibleValues = null;
+        this.cellGroupIndicators = cell.cellGroupIndicators;
     }
 
     public boolean isFilled() {
@@ -41,9 +44,8 @@ public class Cell {
     }
 
     public int getValue() {
-        if (isEmpty()) {
+        if (isEmpty())
             throw new IllegalStateException("empty cell has no value");
-        }
         return value;
     }
 
@@ -52,20 +54,20 @@ public class Cell {
             throw new IllegalArgumentException("Value must be greater than 0");
         if (this.isFilled())
             throw new IllegalStateException("Value was already set");
-        this.impossibles = null;
+        this.impossibleValues = null;
         this.value = value;
     }
 
-    public boolean addImpossible(int impossibleValue) {
+    public boolean addImpossibleValue(int impossibleValue) {
         if (impossibleValue < 1)
             throw new IllegalArgumentException("Possible must be greater than 0");
-        return impossibles.add(impossibleValue);
+        return impossibleValues.add(impossibleValue);
     }
 
     public boolean addImpossibles(Set<Integer> impossibleValues) {
         boolean atLeastOneValueWasAdded = false;
         for (int impossibleValue : impossibleValues) {
-            boolean valueWasAdded = addImpossible(impossibleValue);
+            boolean valueWasAdded = addImpossibleValue(impossibleValue);
             if (valueWasAdded)
                 atLeastOneValueWasAdded = true;
         }
