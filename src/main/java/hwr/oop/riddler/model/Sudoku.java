@@ -1,114 +1,69 @@
 package hwr.oop.riddler.model;
 
-import hwr.oop.riddler.model.component.*;
+import hwr.oop.riddler.model.component.Cell;
+import hwr.oop.riddler.model.component.CellGroup;
+import hwr.oop.riddler.model.component.CellGroupType;
 import lombok.Getter;
 
-import java.util.*;
-import java.util.function.IntFunction;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toSet;
 
 public class Sudoku {
-    private final Cell[][] cells;
+    private final Set<Cell> cells;
     @Getter
     private final int size;
-    private final int boxSize;
 
-    public Sudoku(int[][] input) {
-        size = input.length;
-        boxSize = (int) Math.sqrt(size);
-        cells = new Cell[size][size];
-        fillCells(input);
+    public Sudoku(Set<Cell> cells) {
+        this.cells = cells;
+        size = (int) Math.sqrt(cells.size());
     }
 
     public Sudoku(Sudoku sudoku) {
-        this.cells = new Cell[sudoku.size][sudoku.size];
-        for (int rowIndex = 0; rowIndex < sudoku.size; rowIndex++) {
-            for (int columnIndex = 0; columnIndex < sudoku.size; columnIndex++) {
-                this.cells[rowIndex][columnIndex] = new Cell(sudoku.cells[rowIndex][columnIndex]);
-            }
-        }
+        this.cells = sudoku.cells
+                .stream()
+                .map(Cell::new)
+                .collect(toSet());
         this.size = sudoku.size;
-        this.boxSize = sudoku.boxSize;
     }
 
-    private void fillCells(int[][] input) {
-        for (int rowIndex = 0; rowIndex < size; rowIndex++) {
-            int[] row = input[rowIndex];
-            for (int columnIndex = 0; columnIndex < size; columnIndex++) {
-                int cellValue = row[columnIndex];
-                cells[rowIndex][columnIndex] = new Cell(cellValue);
-            }
+    public Set<CellGroup> getAllCellGroups() {
+        var cellGroups = new HashSet<CellGroup>();
+        for (CellGroupType type : CellGroupType.values()) {
+            cellGroups.addAll(getAllCellGroupsOfSameType(type));
         }
+        return cellGroups;
     }
 
-    public int[][] getValues() {
-        int[][] sudoku = new int[size][size];
-        for (int rowIndex = 0; rowIndex < size; rowIndex++) {
-            for (int columnIndex = 0; columnIndex < size; columnIndex++) {
-                Cell cell = cells[rowIndex][columnIndex];
-                sudoku[rowIndex][columnIndex] = cell.isFilled() ? cell.getValue() : 0;
-            }
-        }
-        return sudoku;
+    private Set<CellGroup> getAllCellGroupsOfSameType(CellGroupType cellGroupType) {
+        return cells.stream()
+                .collect(groupingBy(cell -> cell.getCellGroupIndicators().getCellGroupIndicator(cellGroupType), toSet()))
+                .values()
+                .stream()
+                .map(CellGroup::new)
+                .collect(toSet());
     }
 
-    public List<Cell> getCells() {
-        return Arrays.stream(cells).flatMap(Arrays::stream).toList();
+    public Set<Cell> getCells() {
+        return new HashSet<>(cells);
     }
 
-    public List<Cell> getUnsolvedCells() {
-        return getCells().stream().filter(Cell::isEmpty).toList();
+    public Set<Cell> getUnsolvedCells() {
+        return cells.stream()
+                .filter(Cell::isEmpty)
+                .collect(toSet());
     }
 
-    public CellGroup getRow(int rowIndex) {
-        return new CellGroup(Set.of(cells[rowIndex]));
-    }
-
-    public CellGroup getColumn(int columnIndex) {
-        var column = new HashSet<Cell>();
-        for (int rowIndex = 0; rowIndex < size; rowIndex++) {
-            column.add(this.cells[rowIndex][columnIndex]);
-        }
-        return new CellGroup(column);
-    }
-
-    public CellGroup getBox(int boxIndex) {
-        var boxCells = new HashSet<Cell>(9);
-        int boxLatitude = boxIndex / boxSize;
-        int boxLongitude = boxIndex % boxSize;
-        for (int y = 0; y < boxSize; y++) {
-            for (int x = 0; x < boxSize; x++) {
-                boxCells.add(cells[boxLatitude * boxSize + y][boxLongitude * boxSize + x]);
-            }
-        }
-        return new CellGroup(boxCells);
-    }
-
-    public Set<CellGroup> getRows() {
-        return getAllGroupsOfSameType(this::getRow);
-    }
-
-    public Set<CellGroup> getColumns() {
-        return getAllGroupsOfSameType(this::getColumn);
-    }
-
-    public Set<CellGroup> getBoxes() {
-        return getAllGroupsOfSameType(this::getBox);
-    }
-
-    private Set<CellGroup> getAllGroupsOfSameType(IntFunction<CellGroup> getGroup) {
-        var groups = new HashSet<CellGroup>(size);
-        for (int i = 0; i < size; i++) {
-            groups.add(getGroup.apply(i));
-        }
-        return groups;
-    }
-
-    public Set<CellGroup> getConcatenatedCellGroups() {
-        var allCellGroups = new HashSet<CellGroup>(size * 3);
-        allCellGroups.addAll(getRows());
-        allCellGroups.addAll(getColumns());
-        allCellGroups.addAll(getBoxes());
-        return allCellGroups;
+    public Cell getCellAt(int row, int column) {
+        Optional<Cell> result = cells.stream()
+                .filter(cell -> (cell.getCellGroupIndicators().row() == row) && (cell.getCellGroupIndicators().column() == column))
+                .findAny();
+        if (result.isEmpty())
+            throw new IllegalStateException("no cell found at: " + row + ", " + column);
+        return result.get();
     }
 
     public boolean isFilled() {

@@ -1,26 +1,27 @@
 package hwr.oop.riddler.logic.solver;
 
-import hwr.oop.riddler.logic.SudokuValidator;
-import hwr.oop.riddler.logic.solver.component.*;
+import hwr.oop.riddler.logic.solver.component.PossiblesEliminator;
+import hwr.oop.riddler.logic.solver.component.SinglePossibleImplementer;
+import hwr.oop.riddler.logic.solver.component.SolvingComponent;
+import hwr.oop.riddler.logic.validator.SudokuValidator;
 import hwr.oop.riddler.model.Sudoku;
 import hwr.oop.riddler.model.component.Cell;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.List;
+import java.util.Set;
 
 public class BacktrackingSolver {
+    private final SudokuValidator validator = new SudokuValidator();
     private final SolvingComponent[] solvingComponents = {
             new PossiblesEliminator(),
-            //new AdvancedPossiblesEliminator(), -- TODO: work on this once solver works
-            new SinglePossibleImplementor(),
+            new SinglePossibleImplementer(),
     };
-    private final SudokuValidator validator = new SudokuValidator();
 
     private Sudoku workingCopy;
     private final Deque<Sudoku> sudokuBackups = new ArrayDeque<>();
 
-    public Sudoku solve(Sudoku sudoku) {
+    public Sudoku getSolvedSudoku(Sudoku sudoku) {
         workingCopy = new Sudoku(sudoku);
 
         while (true) {
@@ -31,12 +32,12 @@ public class BacktrackingSolver {
 
         if (!validator.isValid(workingCopy)) {
             backtrack();
-            workingCopy = solve(workingCopy);
+            workingCopy = getSolvedSudoku(workingCopy);
         }
 
         if (!workingCopy.isFilled()) {
             assumeValue();
-            workingCopy = solve(workingCopy);
+            workingCopy = getSolvedSudoku(workingCopy);
         }
 
         return workingCopy;
@@ -44,8 +45,8 @@ public class BacktrackingSolver {
 
     private boolean solveWithSteps() {
         for (SolvingComponent solvingComponent : solvingComponents) {
-            boolean solvingStepMadeChanges = solvingComponent.execute(workingCopy);
-            if (solvingStepMadeChanges)
+            solvingComponent.execute(workingCopy);
+            if (solvingComponent.changesWereMade())
                 return true;
         }
         return false;
@@ -56,25 +57,29 @@ public class BacktrackingSolver {
     }
 
     private void assumeValue() {
-        Cell targetCell = getNextUnsolvedCell();
-        int assumedValue = getAPossibleValue(targetCell);
+        Cell unsolvedCell = getNextUnsolvedCell();
+        int assumedValue = getAPossibleValue(unsolvedCell);
 
-        targetCell.addImpossible(assumedValue);
+        unsolvedCell.addImpossibleValue(assumedValue);
         sudokuBackups.push(new Sudoku(workingCopy));
 
-        targetCell.setValue(assumedValue);
+        unsolvedCell.setValue(assumedValue);
     }
 
     private Cell getNextUnsolvedCell() {
-        List<Cell> unsolvedCells = workingCopy.getUnsolvedCells();
-        return unsolvedCells.get(0);
+        Set<Cell> unsolvedCells = workingCopy.getUnsolvedCells();
+        return unsolvedCells.iterator().next();
     }
 
     private int getAPossibleValue(Cell cell) {
-        for (int value = 1; value <= workingCopy.getSize(); value++) {
-            if (!cell.getImpossibles().contains(value))
-                return value;
+        if (cell.isEmpty()) {
+            for (int value = 1; value <= workingCopy.getSize(); value++) {
+                if (!cell.getImpossibleValues().contains(value))
+                    return value;
+            }
+        } else {
+            throw new IllegalArgumentException("cell is already filled");
         }
-        throw new IllegalStateException("empty cell has no possible values");
+        throw new IllegalStateException("cell has no possible values");
     }
 }

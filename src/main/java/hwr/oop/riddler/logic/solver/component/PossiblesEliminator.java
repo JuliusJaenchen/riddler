@@ -8,21 +8,26 @@ public class PossiblesEliminator implements SolvingComponent {
     boolean changesWereMade;
 
     @Override
-    public boolean execute(Sudoku sudoku) {
+    public void execute(Sudoku sudoku) {
         this.changesWereMade = false;
 
-        for (CellGroup cellGroup : sudoku.getConcatenatedCellGroups()) {
+        for (CellGroup cellGroup : sudoku.getAllCellGroups()) {
             removePossibleCellValues(cellGroup);
         }
+    }
 
-        return this.changesWereMade;
+    @Override
+    public boolean changesWereMade() {
+        return changesWereMade;
     }
 
     private void removePossibleCellValues(CellGroup cellGroup) {
-        for (Cell cell : cellGroup.getUnsolvedCells()) {
-            boolean addedImpossibles = cell.addImpossibles(cellGroup.getAllValues());
-            if (addedImpossibles)
-                this.changesWereMade = true;
+        for (Cell cell : cellGroup.cells()) {
+            if (cell.isEmpty()) {
+                boolean addedImpossibles = cell.addImpossibles(cellGroup.getCellValues());
+                if (addedImpossibles)
+                    this.changesWereMade = true;
+            }
         }
     }
 }
