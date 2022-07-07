@@ -25,9 +25,9 @@ This repository contains a student project created for an ongoing lecture on obj
 
 [TODO]: # (For each additional dependency your project requires- Add an additional row to the table!)
 
-| Number | Dependency Name | Dependency Description | Why is it necessary? |
-|--------|-----------------|------------------------|----------------------|
-| 1      | /               | /                      | /                    |
+| Number | Dependency Name | Dependency Description              | Why is it necessary?              |
+|--------|-----------------|-------------------------------------|-----------------------------------|
+| 1      | Lombok          | generates getter and setter methods | circumvents getter/setter clutter |
 
 ## Instructions
 
