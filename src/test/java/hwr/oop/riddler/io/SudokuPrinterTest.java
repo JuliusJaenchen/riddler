@@ -8,7 +8,7 @@ import java.io.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SudokuPrinterTest {
+class SudokuPrinterTest {
     private final SudokuParser parser = new SudokuParser();
 
     @Test

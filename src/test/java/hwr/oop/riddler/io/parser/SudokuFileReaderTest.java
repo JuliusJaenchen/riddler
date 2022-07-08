@@ -1,4 +1,4 @@
-package hwr.oop.riddler.io;
+package hwr.oop.riddler.io.parser;
 
 import hwr.oop.riddler.io.parser.SudokuFileReader;
 import org.junit.jupiter.api.Test;
@@ -10,16 +10,16 @@ import java.io.UncheckedIOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SudokuFileReaderTest {
+class SudokuFileReaderTest {
     @Test
-    public void constructor_UnknownFile_FileNotFoundExceptionIsThrown() {
+    void constructor_UnknownFile_FileNotFoundExceptionIsThrown() {
         assertThrows(FileNotFoundException.class, () -> new SudokuFileReader(new File("thisfiledoesnotexist")));
     }
 
     @Test
-    public void lines_InputWithEmptyLines_EmptyLinesGetRemoved() {
+    void lines_InputWithEmptyLines_EmptyLinesGetRemoved() {
         var input = new File("src/test/resources/hwr/oop/riddler/io/SudokuFileReader/emptylines");
-        try (var reader = new SudokuFileReader(input)){
+        try (var reader = new SudokuFileReader(input)) {
             var result = reader.lines();
             assertEquals(6, result.count());
         } catch (IOException e) {
@@ -29,9 +29,9 @@ public class SudokuFileReaderTest {
     }
 
     @Test
-    public void lines_InputWithEmptyLines_RemainingLinesAreNotEmpty() {
+    void lines_InputWithEmptyLines_RemainingLinesAreNotEmpty() {
         var input = new File("src/test/resources/hwr/oop/riddler/io/SudokuFileReader/emptylines");
-        try (var reader = new SudokuFileReader(input)){
+        try (var reader = new SudokuFileReader(input)) {
             var result = reader.lines();
             assertFalse(result.anyMatch(String::isEmpty));
         } catch (IOException e) {
@@ -39,10 +39,11 @@ public class SudokuFileReaderTest {
             fail();
         }
     }
+
     @Test
-    public void lines_InputWithUnsanitizedLines_EmptySpacesAreRemoved() {
+    void lines_InputWithUnsanitizedLines_EmptySpacesAreRemoved() {
         var input = new File("src/test/resources/hwr/oop/riddler/io/SudokuFileReader/unsanitized");
-        try (var reader = new SudokuFileReader(input)){
+        try (var reader = new SudokuFileReader(input)) {
             var result = reader.lines();
             assertTrue(result.toList().contains("thiscontainsemptyspaces"));
         } catch (IOException e) {
@@ -50,10 +51,11 @@ public class SudokuFileReaderTest {
             fail();
         }
     }
+
     @Test
-    public void lines_InputWithUnsanitizedLines_UnderscoreGetsReplaced() {
+    void lines_InputWithUnsanitizedLines_UnderscoreGetsReplaced() {
         var input = new File("src/test/resources/hwr/oop/riddler/io/SudokuFileReader/unsanitized");
-        try (var reader = new SudokuFileReader(input)){
+        try (var reader = new SudokuFileReader(input)) {
             var result = reader.lines();
             assertTrue(result.toList().contains("this0standsforsomething0"));
         } catch (IOException e) {
@@ -63,7 +65,7 @@ public class SudokuFileReaderTest {
     }
 
     @Test
-    public void close_ReaderIsClosed_ReaderGetsClosed() {
+    void close_ReaderIsClosed_ReaderGetsClosed() {
         var input = new File("src/test/resources/hwr/oop/riddler/io/SudokuFileReader/emptylines");
         assertThrows(UncheckedIOException.class, () -> {
             try {

@@ -81,5 +81,6 @@ public class BacktrackingSolver {
             throw new IllegalArgumentException("cell is already filled");
         }
         throw new IllegalStateException("cell has no possible values");
+        //above two exceptions can never be reached
     }
 }

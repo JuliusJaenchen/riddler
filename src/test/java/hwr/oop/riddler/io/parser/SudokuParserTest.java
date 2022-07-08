@@ -1,4 +1,4 @@
-package hwr.oop.riddler.io;
+package hwr.oop.riddler.io.parser;
 
 import hwr.oop.riddler.io.parser.SudokuParser;
 import org.junit.jupiter.api.Test;
