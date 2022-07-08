@@ -25,7 +25,7 @@ public class SudokuPrinter {
     private String sudokuToString(Sudoku sudoku) {
         var builder = new StringBuilder();
 
-        builder.append("------ Sudoku -------\n");
+        builder.append("------ Solved Sudoku -------\n");
         for (int row = 0; row < sudoku.getSize(); row++) {
             for (int column = 0; column < sudoku.getSize(); column++) {
                 var cell = sudoku.getCellAt(row, column);
