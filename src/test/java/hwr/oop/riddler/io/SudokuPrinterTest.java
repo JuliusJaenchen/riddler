@@ -13,8 +13,7 @@ class SudokuPrinterTest {
 
     @Test
     void print_fullSudoku_EqualsExpectedOutput() throws IOException {
-        var inputFile = new File("src/test/resources/parser/parser.full.txt");
-        var sudoku = parser.parse(inputFile);
+        var sudoku = parser.parse("src/test/resources/parser/parser.full.txt");
 
         var pipeInput = new PipedInputStream();
         var out = new BufferedOutputStream(new PipedOutputStream(pipeInput));
@@ -34,8 +33,7 @@ class SudokuPrinterTest {
 
     @Test
     void print_emptySudoku_EqualsExpectedOutput() throws IOException {
-        var inputFile = new File("src/test/resources/parser/parser.1.txt");
-        var sudoku = parser.parse(inputFile);
+        var sudoku = parser.parse("src/test/resources/parser/parser.1.txt");
 
         var pipeInput = new PipedInputStream();
         var out = new BufferedOutputStream(new PipedOutputStream(pipeInput));
@@ -54,8 +52,7 @@ class SudokuPrinterTest {
 
     @Test
     void print_invalidOutputStream_ThrowsUncheckedIOEXception() throws IOException {
-        var inputFile = new File("src/test/resources/parser/parser.1.txt");
-        var sudoku = parser.parse(inputFile);
+        var sudoku = parser.parse("src/test/resources/parser/parser.1.txt");
 
         var pipeInput = new PipedInputStream();
         var out = new BufferedOutputStream(new PipedOutputStream(pipeInput));

@@ -1,6 +1,5 @@
 package hwr.oop.riddler.io.parser;
 
-import hwr.oop.riddler.io.parser.SudokuFileReader;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

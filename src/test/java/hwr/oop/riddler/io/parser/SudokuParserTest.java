@@ -1,6 +1,5 @@
 package hwr.oop.riddler.io.parser;
 
-import hwr.oop.riddler.io.parser.SudokuParser;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -13,16 +12,14 @@ class SudokuParserTest {
 
     @Test
     void parse_TestSudoku1_Position00Equals8() {
-        var inputFile = new File("src/test/resources/parser/parser.1.txt");
-        var sudoku = parser.parse(inputFile);
+        var sudoku = parser.parse("src/test/resources/parser/parser.1.txt");
         var cell = sudoku.getCellAt(0, 0);
         assertEquals(8, cell.getValue());
     }
 
     @Test
     void parse_TestSudoku1_OtherCellsAreEmptyExcept00() {
-        var inputFile = new File("src/test/resources/parser/parser.1.txt");
-        var sudoku = parser.parse(inputFile);
+        var sudoku = parser.parse("src/test/resources/parser/parser.1.txt");
         var cell1 = sudoku.getCellAt(1, 0);
         var cell2 = sudoku.getCellAt(1, 8);
         var cell3 = sudoku.getCellAt(8, 8);
