@@ -8,13 +8,12 @@ import java.io.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SudokuPrinterTest {
+class SudokuPrinterTest {
     private final SudokuParser parser = new SudokuParser();
 
     @Test
-    void print_fullSudoku_EqualsExpectedOutput() throws IOException {
-        var inputFile = new File("src/test/resources/parser/parser.full.txt");
-        var sudoku = parser.parse(inputFile);
+    void print_fullSudoku_equalsExpectedOutput() throws IOException {
+        var sudoku = parser.parse("src/test/resources/parser/parser.full.txt");
 
         var pipeInput = new PipedInputStream();
         var out = new BufferedOutputStream(new PipedOutputStream(pipeInput));
@@ -33,9 +32,8 @@ public class SudokuPrinterTest {
 
 
     @Test
-    void print_emptySudoku_EqualsExpectedOutput() throws IOException {
-        var inputFile = new File("src/test/resources/parser/parser.1.txt");
-        var sudoku = parser.parse(inputFile);
+    void print_emptySudoku_equalsExpectedOutput() throws IOException {
+        var sudoku = parser.parse("src/test/resources/parser/parser.1.txt");
 
         var pipeInput = new PipedInputStream();
         var out = new BufferedOutputStream(new PipedOutputStream(pipeInput));
@@ -53,9 +51,8 @@ public class SudokuPrinterTest {
     }
 
     @Test
-    void print_invalidOutputStream_ThrowsUncheckedIOEXception() throws IOException {
-        var inputFile = new File("src/test/resources/parser/parser.1.txt");
-        var sudoku = parser.parse(inputFile);
+    void print_invalidOutputStream_throwsUncheckedIOEXception() throws IOException {
+        var sudoku = parser.parse("src/test/resources/parser/parser.1.txt");
 
         var pipeInput = new PipedInputStream();
         var out = new BufferedOutputStream(new PipedOutputStream(pipeInput));
