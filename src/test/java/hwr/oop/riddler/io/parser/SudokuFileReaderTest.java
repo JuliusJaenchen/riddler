@@ -11,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SudokuFileReaderTest {
     @Test
-    void constructor_UnknownFile_FileNotFoundExceptionIsThrown() {
+    void constructor_unknownFile_fileNotFoundExceptionIsThrown() {
         assertThrows(FileNotFoundException.class, () -> new SudokuFileReader(new File("thisfiledoesnotexist")));
     }
 
     @Test
-    void lines_InputWithEmptyLines_EmptyLinesGetRemoved() {
+    void lines_inputWithEmptyLines_emptyLinesGetRemoved() {
         var input = new File("src/test/resources/hwr/oop/riddler/io/SudokuFileReader/emptylines");
         try (var reader = new SudokuFileReader(input)) {
             var result = reader.lines();
@@ -28,7 +28,7 @@ class SudokuFileReaderTest {
     }
 
     @Test
-    void lines_InputWithEmptyLines_RemainingLinesAreNotEmpty() {
+    void lines_inputWithEmptyLines_remainingLinesAreNotEmpty() {
         var input = new File("src/test/resources/hwr/oop/riddler/io/SudokuFileReader/emptylines");
         try (var reader = new SudokuFileReader(input)) {
             var result = reader.lines();
@@ -40,7 +40,7 @@ class SudokuFileReaderTest {
     }
 
     @Test
-    void lines_InputWithUnsanitizedLines_EmptySpacesAreRemoved() {
+    void lines_inputWithUnsanitizedLines_emptySpacesAreRemoved() {
         var input = new File("src/test/resources/hwr/oop/riddler/io/SudokuFileReader/unsanitized");
         try (var reader = new SudokuFileReader(input)) {
             var result = reader.lines();
@@ -52,7 +52,7 @@ class SudokuFileReaderTest {
     }
 
     @Test
-    void lines_InputWithUnsanitizedLines_UnderscoreGetsReplaced() {
+    void lines_inputWithUnsanitizedLines_underscoreGetsReplaced() {
         var input = new File("src/test/resources/hwr/oop/riddler/io/SudokuFileReader/unsanitized");
         try (var reader = new SudokuFileReader(input)) {
             var result = reader.lines();
@@ -64,7 +64,7 @@ class SudokuFileReaderTest {
     }
 
     @Test
-    void close_ReaderIsClosed_ReaderGetsClosed() {
+    void close_readerIsClosed_readerGetsClosed() {
         var input = new File("src/test/resources/hwr/oop/riddler/io/SudokuFileReader/emptylines");
         assertThrows(UncheckedIOException.class, () -> {
             try {
